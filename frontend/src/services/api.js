@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { EC2Instance, LogQueryRequest, LogQueryResponse, ExportRequest } from '../types';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -11,29 +10,29 @@ const apiClient = axios.create({
 });
 
 export const instancesService = {
-  getInstances: async (): Promise<EC2Instance[]> => {
+  getInstances: async () => {
     const response = await apiClient.get('/instances');
     return response.data;
   },
 
-  getInstance: async (instanceId: string): Promise<EC2Instance> => {
+  getInstance: async (instanceId) => {
     const response = await apiClient.get(`/instances/${instanceId}`);
     return response.data;
   },
 };
 
 export const logsService = {
-  queryLogs: async (request: LogQueryRequest): Promise<LogQueryResponse> => {
+  queryLogs: async (request) => {
     const response = await apiClient.post('/logs/query', request);
     return response.data;
   },
 
-  getLogGroups: async (instanceId: string): Promise<string[]> => {
+  getLogGroups: async (instanceId) => {
     const response = await apiClient.get(`/logs/groups/${instanceId}`);
     return response.data;
   },
 
-  exportLogs: async (request: ExportRequest): Promise<void> => {
+  exportLogs: async (request) => {
     const response = await apiClient.post('/logs/export', request, {
       responseType: 'blob',
     });

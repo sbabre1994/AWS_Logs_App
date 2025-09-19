@@ -11,11 +11,10 @@ import { InstanceSelector } from './InstanceSelector';
 import { LogControls } from './LogControls';
 import { LogDisplay } from './LogDisplay';
 import { useInstances } from '../hooks/useApi';
-import { LogQueryRequest } from '../types';
 
-export const AWSLogsApp: React.FC = () => {
-  const [selectedInstanceId, setSelectedInstanceId] = useState<string>('');
-  const [logQuery, setLogQuery] = useState<LogQueryRequest>({
+export const AWSLogsApp = () => {
+  const [selectedInstanceId, setSelectedInstanceId] = useState('');
+  const [logQuery, setLogQuery] = useState({
     instanceId: '',
     pageSize: 100,
   });
@@ -52,12 +51,12 @@ export const AWSLogsApp: React.FC = () => {
     );
   }
 
-  const handleInstanceSelect = (instanceId: string) => {
+  const handleInstanceSelect = (instanceId) => {
     setSelectedInstanceId(instanceId);
     setLogQuery(prev => ({ ...prev, instanceId }));
   };
 
-  const handleQueryChange = (newQuery: Partial<LogQueryRequest>) => {
+  const handleQueryChange = (newQuery) => {
     setLogQuery(prev => ({ ...prev, ...newQuery }));
   };
 

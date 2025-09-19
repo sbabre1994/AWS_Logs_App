@@ -1,6 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { instancesService, logsService } from '../services/api';
-import { LogQueryRequest, ExportRequest } from '../types';
+import { instancesService, logsService } from '../services/mockApi';
 
 export const useInstances = () => {
   return useQuery({
@@ -9,7 +8,7 @@ export const useInstances = () => {
   });
 };
 
-export const useInstance = (instanceId: string) => {
+export const useInstance = (instanceId) => {
   return useQuery({
     queryKey: ['instances', instanceId],
     queryFn: () => instancesService.getInstance(instanceId),
@@ -17,7 +16,7 @@ export const useInstance = (instanceId: string) => {
   });
 };
 
-export const useLogs = (request: LogQueryRequest) => {
+export const useLogs = (request) => {
   return useQuery({
     queryKey: ['logs', request],
     queryFn: () => logsService.queryLogs(request),
@@ -25,7 +24,7 @@ export const useLogs = (request: LogQueryRequest) => {
   });
 };
 
-export const useLogGroups = (instanceId: string) => {
+export const useLogGroups = (instanceId) => {
   return useQuery({
     queryKey: ['logGroups', instanceId],
     queryFn: () => logsService.getLogGroups(instanceId),
@@ -35,7 +34,7 @@ export const useLogGroups = (instanceId: string) => {
 
 export const useExportLogs = () => {
   return useMutation({
-    mutationFn: (request: ExportRequest) => logsService.exportLogs(request),
+    mutationFn: (request) => logsService.exportLogs(request),
     onSuccess: () => {
       // Could show success toast here
     },

@@ -10,20 +10,13 @@ import {
   Box,
   Tooltip,
 } from '@chakra-ui/react';
-import { EC2Instance } from '../types';
 
-interface InstanceSelectorProps {
-  instances: EC2Instance[];
-  selectedInstanceId: string;
-  onInstanceSelect: (instanceId: string) => void;
-}
-
-export const InstanceSelector: React.FC<InstanceSelectorProps> = ({
+export const InstanceSelector = ({
   instances,
   selectedInstanceId,
   onInstanceSelect,
 }) => {
-  const getStateColor = (state: string) => {
+  const getStateColor = (state) => {
     switch (state.toLowerCase()) {
       case 'running':
         return 'green';
@@ -38,7 +31,7 @@ export const InstanceSelector: React.FC<InstanceSelectorProps> = ({
     }
   };
 
-  const getStateIcon = (state: string) => {
+  const getStateIcon = (state) => {
     switch (state.toLowerCase()) {
       case 'running':
         return '🟢';
@@ -77,7 +70,7 @@ export const InstanceSelector: React.FC<InstanceSelectorProps> = ({
         <Box p={4} borderWidth={1} borderRadius="md" bg="gray.50">
           <VStack spacing={3} align="start">
             <HStack>
-              {getStateIcon(selectedInstance.state)}
+              <Text fontSize="lg">{getStateIcon(selectedInstance.state)}</Text>
               <Text fontWeight="semibold">{selectedInstance.name}</Text>
               <Badge colorScheme={getStateColor(selectedInstance.state)}>
                 {selectedInstance.state}

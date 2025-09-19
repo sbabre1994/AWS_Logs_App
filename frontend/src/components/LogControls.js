@@ -19,16 +19,9 @@ import {
   Flex,
   Spacer,
 } from '@chakra-ui/react';
-import { LogQueryRequest, ExportRequest, LogLevel } from '../types';
 import { useExportLogs } from '../hooks/useApi';
 
-interface LogControlsProps {
-  instanceId: string;
-  onQueryChange: (query: Partial<LogQueryRequest>) => void;
-  currentQuery: LogQueryRequest;
-}
-
-export const LogControls: React.FC<LogControlsProps> = ({
+export const LogControls = ({
   instanceId,
   onQueryChange,
   currentQuery,
@@ -45,9 +38,9 @@ export const LogControls: React.FC<LogControlsProps> = ({
   const exportMutation = useExportLogs();
   const toast = useToast();
 
-  const logLevels: LogLevel[] = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
+  const logLevels = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
 
-  const handleFilterChange = (field: string, value: string) => {
+  const handleFilterChange = (field, value) => {
     const newFilters = { ...filters, [field]: value };
     setFilters(newFilters);
     onQueryChange(newFilters);
@@ -68,9 +61,9 @@ export const LogControls: React.FC<LogControlsProps> = ({
     onQueryChange(clearedFilters);
   };
 
-  const handleExport = async (format: 'CSV' | 'TXT' | 'JSON') => {
+  const handleExport = async (format) => {
     try {
-      const exportRequest: ExportRequest = {
+      const exportRequest = {
         instanceId,
         format,
         startTime: filters.startTime || undefined,
@@ -118,17 +111,15 @@ export const LogControls: React.FC<LogControlsProps> = ({
         <Spacer />
         <HStack spacing={2}>
           <Tooltip label={autoRefresh ? 'Disable auto-refresh' : 'Enable auto-refresh'}>
-          <Tooltip label={autoRefresh ? 'Disable auto-refresh' : 'Enable auto-refresh'}>
             <Button
               size="sm"
-              leftIcon={autoRefresh ? <Text>⏸️</Text> : <Text>▶️</Text>}
+              leftIcon={<Text>{autoRefresh ? '⏸️' : '▶️'}</Text>}
               colorScheme={autoRefresh ? 'red' : 'green'}
               variant={autoRefresh ? 'solid' : 'outline'}
               onClick={toggleAutoRefresh}
             >
               {autoRefresh ? 'Live' : 'Manual'}
             </Button>
-          </Tooltip>
           </Tooltip>
           
           <Tooltip label="Refresh logs">

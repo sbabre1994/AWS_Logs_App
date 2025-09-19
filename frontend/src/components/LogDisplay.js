@@ -23,16 +23,11 @@ import {
   FormLabel,
   Heading,
 } from '@chakra-ui/react';
-import { LogQueryRequest } from '../types';
 import { useLogs } from '../hooks/useApi';
 import { format } from 'date-fns';
 
-interface LogDisplayProps {
-  query: LogQueryRequest;
-}
-
-export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
-  const [expandedLogs, setExpandedLogs] = useState<Set<string>>(new Set());
+export const LogDisplay = ({ query }) => {
+  const [expandedLogs, setExpandedLogs] = useState(new Set());
   const [tableView, setTableView] = useState(false);
   
   const { data: logResponse, isLoading, error, refetch } = useLogs(query);
@@ -42,7 +37,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
 
   // Auto-refresh logic
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval;
     
     if (query.isLiveMode) {
       interval = setInterval(() => {
@@ -57,7 +52,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
     };
   }, [query.isLiveMode, refetch]);
 
-  const getLogLevelColor = (level: string) => {
+  const getLogLevelColor = (level) => {
     switch (level.toUpperCase()) {
       case 'ERROR':
         return 'red';
@@ -75,7 +70,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
     }
   };
 
-  const getLogLevelIcon = (level: string) => {
+  const getLogLevelIcon = (level) => {
     switch (level.toUpperCase()) {
       case 'ERROR':
         return '❌';
@@ -91,7 +86,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
     }
   };
 
-  const toggleLogExpansion = (eventId: string) => {
+  const toggleLogExpansion = (eventId) => {
     const newExpanded = new Set(expandedLogs);
     if (newExpanded.has(eventId)) {
       newExpanded.delete(eventId);
@@ -101,7 +96,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
     setExpandedLogs(newExpanded);
   };
 
-  const formatTimestamp = (timestamp: string) => {
+  const formatTimestamp = (timestamp) => {
     try {
       return format(new Date(timestamp), 'yyyy-MM-dd HH:mm:ss.SSS');
     } catch {
@@ -185,7 +180,7 @@ export const LogDisplay: React.FC<LogDisplayProps> = ({ query }) => {
                   <Button
                     size="xs"
                     variant="ghost"
-                    leftIcon={isExpanded ? <Text>🔽</Text> : <Text>▶️</Text>}
+                    leftIcon={<Text>{isExpanded ? '🔽' : '▶️'}</Text>}
                     onClick={() => toggleLogExpansion(log.eventId)}
                   >
                     {isExpanded ? 'Less' : 'More'}
